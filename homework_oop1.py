@@ -33,13 +33,11 @@ class Students:
                 f"\nКурсы, в процессе изучения: {', '.join(self.courses_in_progress)} \n"
                 f"Завершенные курсы: {', '.join(self.finished_courses)}")
     
-    def comparison_students(self, student):
-        if self.avg_grades() > student.avg_grades():
-            return f'{self.full_name()} учится лучше чем {student.full_name()}'
-        elif self.avg_grades() < student.avg_grades():
-            return f'{self.full_name()} учится хуже чем {student.full_name()}'
-        else:
-            return f'{self.full_name()} и {student.full_name()} учатся одинаково' 
+    def __gt__(self, student):
+        return self.avg_grades() > student.avg_grades()
+        
+    def __lt__(self, student):
+        return self.avg_grades() < student.avg_grades()
 
 class Mentors:
     def __init__(self, name, surname):
@@ -63,13 +61,11 @@ class Lectors(Mentors):
         self.average_ratings = sum(list_to_int) / len(list_to_int)
         return self.average_ratings  
     
-    def comparison_lectors(self, lector):
-        if self.avg_ratings() > lector.avg_ratings():
-            return f'{self.full_name()} преподаёт лучше чем {lector.full_name()}'
-        elif self.avg_ratings() < lector.avg_ratings():
-            return f'{self.full_name()} преподаёт хуже чем {lector.full_name()}'
-        else:
-            return f'{self.full_name()} и {lector.full_name()} преподают одинаково'
+    def __gt__(self, lector):
+        return self.avg_ratings() > lector.avg_ratings()
+    
+    def __lt__(self, lector):
+        return self.avg_ratings() < lector.avg_ratings()
 
     def __str__(self):
         return f"Имя: {self.name} \nФамилия: {self.surname} \nСредняя оценка за лекции: {round(self.avg_ratings(), 1)}"
@@ -154,11 +150,24 @@ student_2.rating_Lectors(lector_1, 'Python', 5)
 student_2.rating_Lectors(lector_2, 'Python', 9)
 
 print(f'Студенты: \n{student_1} \n \n{student_2}')
-print(f'\n{Students.comparison_students(student_1, student_2)}')
 print(f'\nСредняя оценка за домашние задания по курсу {course}: {students_average_ratings(students_list, course)}')
 print(f'\nЛекторы: \n{lector_1} \n \n{lector_2}')
-print(f'\n{Lectors.comparison_lectors(lector_1, lector_2)}')
 print(f'\nСредняя оценка за лекции по курсу {course}: {lectors_average_ratings(lectors_list, course)}')
 print(f'\nЭксперты: \n{ecspert_1} \n \n{ecspert_2}')
+
+if student_1 > student_2:
+    print(f'\n{student_1.full_name()} учится лучше чем {student_2.full_name()}')
+elif student_1 < student_2:
+    print(f'\n{student_1.full_name()} учится хуже чем {student_2.full_name()}')
+else:
+    print(f'\n{student_1.full_name()} и {student_2.full_name()} учатся одинаково') 
+
+if lector_1 > lector_2:
+    print(f'\n{lector_1.full_name()} преподаёт лучше чем {lector_2.full_name()}')
+elif lector_1 < lector_2:
+    print(f'\n{lector_1.full_name()} преподаёт хуже чем {lector_2.full_name()}')
+else:
+    print(f'\n{lector_1.full_name()} и {lector_2.full_name()} преподают одинаково')
+
 
         
